@@ -1,0 +1,31 @@
+{
+  "name": "postrest",
+  "version": "0.0.1",
+  "description": "Postgres REST client",
+  "keywords": [
+    "postgres",
+    "sql",
+    "rest"
+  ],
+  "author": {
+    "name": "Anders Elo",
+    "email": "anders@kaerus.com"
+  },
+  "contributors": [
+    "anders elo <anders@kaerus.com>"
+  ],
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "engine": "node >= 0.10.0",
+  "bugs": {
+    "url": "https://github.com/kaerus/postrest/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kaerus/postrest.git"
+  },
+  "main": "index.js",
+  "license": "APACHE2_0"
+}
