@@ -17,6 +17,7 @@
   "dependencies": {
   },
   "devDependencies": {
+    "js-beautify": "*"
   },
   "engine": "node >= 0.10.0",
   "bugs": {
