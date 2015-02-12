@@ -15,6 +15,7 @@
     "anders elo <anders@kaerus.com>"
   ],
   "dependencies": {
+    "squel": ">=3.10.0"
   },
   "devDependencies": {
     "js-beautify": "*"
