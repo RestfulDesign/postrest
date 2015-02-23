@@ -9,16 +9,28 @@
   ],
   "author": {
     "name": "Anders Elo",
-    "email": "anders@kaerus.com"
+    "email": "anders@restfuldesign.com"
   },
   "contributors": [
-    "anders elo <anders@kaerus.com>"
+    "anders elo <anders@restfuldesign.com>"
   ],
   "dependencies": {
     "squel": ">=3.10.0"
   },
   "devDependencies": {
-    "js-beautify": "*"
+    "mocha": "*",
+    "chai": "*",
+    "should": "*",
+    "duo": "*",
+    "karma": "*",
+    "karma-mocha": "*",
+    "karma-chai": "*",
+    "csv-parse": ">=0.0.9",
+    "js-beautify": "*",
+    "uglify-js": "~2.4",
+    "karma-spec-reporter": "*",
+    "karma-firefox-launcher": "*",
+    "karma-chrome-launcher": "*"
   },
   "engine": "node >= 0.10.0",
   "bugs": {
@@ -26,8 +38,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/kaerus/postrest.git"
+    "url": "git://github.com/restfuldesign/postrest.git"
   },
   "main": "index.js",
+  "scripts": {
+    "test": "make test"
+  },
   "license": "APACHE2_0"
 }
