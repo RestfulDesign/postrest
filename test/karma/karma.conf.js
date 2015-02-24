@@ -23,7 +23,7 @@ module.exports = function (karma) {
 
 	// List of files/patterns to exclude from loaded files.
 	exclude: [
-
+		'test/aplus'
 	],
 
 	// test results reporter to use

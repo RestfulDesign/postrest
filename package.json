@@ -1,6 +1,6 @@
 {
   "name": "postrest",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Postgres REST client",
   "keywords": [
     "postgres",
@@ -30,7 +30,8 @@
     "uglify-js": "~2.4",
     "karma-spec-reporter": "*",
     "karma-firefox-launcher": "*",
-    "karma-chrome-launcher": "*"
+    "karma-chrome-launcher": "*",
+    "promises-aplus-tests": "2.1.0"
   },
   "engine": "node >= 0.10.0",
   "bugs": {

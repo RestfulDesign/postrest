@@ -7,6 +7,7 @@ BEAUTIFY = @./node_modules/.bin/js-beautify --config ./style.json
 UGLIFYJS = @./node_modules/uglify-js/bin/uglifyjs
 KARMA = @./node_modules/karma/bin/karma
 MOCHA = @./node_modules/mocha/bin/mocha
+APLUS = @./node_modules/promises-aplus-tests/lib/cli.js
 DUO = @./node_modules/duo/bin/duo
 
 LIB = $(wildcard lib/*.js) $(wildcard lib/*/*.js)
@@ -33,6 +34,7 @@ test: test-nodejs
 
 test-nodejs: node_modules
 	@echo "Running tests for nodejs"
+	$(APLUS) ./test/aplus/adapter.js
 	$(MOCHA) --require should --reporter spec
 
 test-browser: test-component
