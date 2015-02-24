@@ -1,18 +1,20 @@
 // Karma configuration
-// Generated on Thu Jul 04 2013 11:39:34 GMT+0200 (CEST)
 
 module.exports = function (karma) {
 
     var config = {
 
-	// base path, that will be used to resolve files and exclude
+	// The root path location that will be used to resolve 
+	// all relative paths defined in files and exclude.
 	basePath: '../../',
 
 
-	// frameworks to use
-	//frameworks: ['jasmine', 'junit-reporter'],
+	// List of test frameworks you want to use
 	frameworks: ['mocha', 'chai'],
-
+	
+	// A map of preprocessors to use.
+	preprocessors: {},
+	
 	// list of files / patterns to load in the browser
 	files: [
 	    'build/test.js',
@@ -20,7 +22,7 @@ module.exports = function (karma) {
 	],
 
 
-	// list of files to exclude
+	// List of files/patterns to exclude from loaded files.
 	exclude: [
 
 	],
@@ -28,34 +30,46 @@ module.exports = function (karma) {
 	// test results reporter to use
 	reporters: ['spec'],
 
+	// Hostname to be used when capturing browsers
+	hostname: 'localhost',
 	// web server port
 	port: 9876,
 
-	// proxy to postrest
-	//proxies: {
-	//    '/':'http://0.0.0.0:6543'
-	//},
+	// A map of path-proxy pairs
+	/*
+	proxies: {
+	    '/':'http://0.0.0.0:6543'
+	},
+	*/
 	
 	// cli runner port
 	runnerPort: 9100,
 
 	// enable / disable colors in the output (reporters and logs)
-	colors: false,
+	colors: true,
 
 
 	// level of logging
 	// possible values: karma.LOG_DISABLE || karma.LOG_ERROR || karma.LOG_WARN || karma.LOG_INFO || karma.LOG_DEBUG
 	logLevel: karma.LOG_ERROR,
-
+	
+	//A list of log appenders to be used.
+	loggers: [{type: 'console'}],
 
 	// enable / disable watching file and executing tests whenever any file changes
 	autoWatch: false,
 
+	// test runner client, i.e mocha
 	client: {
-	    mocha: { timeout: 12345 }
+	    mocha: { timeout: 12345 },
+		useIframe: false,
+		captureConsole: true
 	},
 
-	// Start these browsers, currently available:
+	// List of plugins to load.
+	plugins: ['karma-*'],
+	
+	// Run tests in these browsers, currently available:
 	// - Chrome
 	// - ChromeCanary
 	// - Firefox
@@ -64,6 +78,11 @@ module.exports = function (karma) {
 	// - PhantomJS
 	// - IE (only Windows)
 	browsers: [ "Chrome" ],
+	
+	// How long will Karma wait for a message from a browser 
+	// before disconnecting from it (in ms).
+	browserNoActivityTimeout: 10000,
+	
 	customLaunchers: {
 	    Chrome_travis: {
 		base: 'Chrome',
@@ -71,11 +90,12 @@ module.exports = function (karma) {
 	    }
 	},
 
+	// Maximum boot-up time allowed for a browser to start and connect to Karma.
 	// If browser does not capture in given timeout [ms], kill it
 	captureTimeout: 60000,
 
 	// Continuous Integration mode
-	// if true, it capture browsers, run tests and exit
+	// if true, it capture browsers, runs tests and exits
 	singleRun: true
     };
 
