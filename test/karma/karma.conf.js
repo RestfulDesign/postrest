@@ -17,8 +17,7 @@ module.exports = function (karma) {
 	
 	// list of files / patterns to load in the browser
 	files: [
-	    'build/test.js',
-	    'test/database.js'
+	    'build/test.js'
 	],
 
 
