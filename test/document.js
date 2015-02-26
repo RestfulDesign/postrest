@@ -1,6 +1,7 @@
 var postrest;
 
 var csvParse = require('csv-parse');
+var fs = require('fs');
 
 try {
     postrest = PostRest
@@ -8,54 +9,70 @@ try {
     postrest = require('..')
 }
 
-describe("document", function () {
+describe("-document", function () {
 
-    var db, opendata;
+    var db, data = [];
 
     before(function (done) {
         db = postrest('http://kaerus:kaerus@127.0.0.1:8080');
-        var odata = postrest('http://www.opengeocode.org');
 
         db.database.delete("document").end(function () {
             console.log("dropping document");
             db.database.create("document").end(function () {
 
-                db.connection.path.base = 'document';
-                console.log("creating books collection");
+                db = db.use('/document:data');
+                console.log("connecting to %s", db.connection.toString());
 
-                db.collection.create('books')
-                    .then(function () {
-                        return odata.get('/opendata/opendata.csv');
-                    }).then(function (csv) {
-                        console.log("got data");
-                        return loadData(csv);
-                    }).callback(done);
+                db.collection.delete('data')
+                    .then(function (err, ret) {
+                        console.log("create collection data");
+                        db.collection.create('data')
+                            .end(function () {
+
+                                console.log("created data collection");
+
+                                var promise = new db.Promise();
+                                var all = [];
+
+                                for(var i = 0; i < 10000; i++) {
+                                    var o = {};
+                                    o['name'] = '' + i;
+                                    o['value'] = i;
+                                    o['tags'] = [];
+                                    o['prop'] = {
+                                        x: 1,
+                                        y: 2
+                                    };
+
+                                    if(i % 1) o.tags.push('odd');
+                                    if(i % 2) o.tags.push('even');
+                                    if(i % 10) o.tags.push('ten');
+                                    if(i % 50) o.tags.push('fifty');
+                                    if(i % 100) o.tags.push('hundred');
+                                    if(i % 1000) o.tags.push('thousand');
+
+                                    var dc = db.document.create(o, 'data')
+                                        .then(function (doc) {
+                                            data.push(doc);
+                                        });
+                                    all.push(dc);
+                                }
+
+                                promise.fulfill().join(all).callback(done);
+                            });
+                    });
             });
         });
 
-        function loadData(csv) {
-            csvParse.parse(csv, {
-                columns: true
-            }, function (err, ret) {
-                if(err) return err;
-
-                opendata = ret;
-                console.log("loaded %d rows", ret.length);
-            });
-        }
     });
 
     describe("create", function () {
 
-        it('create one', function (done) {
-            db.document.create({
-                name: ""
-            })
-        })
-
-        it('create [test] database', function (done) {
-            db.database.create('test')
-                .callback(done);
+        it('get first document', function (done) {
+            db.document.get(data[0].id, 'data')
+                .then(function (res) {
+                    res.id.should.equal(data[0].id);
+                }).callback(done);
         })
     });
 

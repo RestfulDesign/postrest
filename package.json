@@ -18,10 +18,10 @@
     "squel": ">=3.10.0"
   },
   "devDependencies": {
+    "duo": "*",
     "mocha": "*",
     "chai": "*",
     "should": "*",
-    "duo": "*",
     "karma": "*",
     "karma-mocha": "*",
     "karma-chai": "*",
@@ -35,7 +35,7 @@
   },
   "engine": "node >= 0.10.0",
   "bugs": {
-    "url": "https://github.com/kaerus/postrest/issues"
+    "url": "https://github.com/restfuldesign/postrest/issues"
   },
   "repository": {
     "type": "git",

@@ -6,7 +6,7 @@ try {
     postrest = require('..')
 }
 
-describe("database", function () {
+describe("-database", function () {
 
     var db;
 
