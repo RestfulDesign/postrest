@@ -13,23 +13,20 @@ describe("-database", function () {
     before(function (done) {
         db = postrest('http://kaerus:kaerus@127.0.0.1:8080');
 
-        db.database.create("test")
-            .end(function () {
-                done();
-            });
+        db.database.delete("test",function() {
+            db.database.create("test").callback(done);
+        });
     });
 
-    describe("delete & create", function () {
+    describe("stats", function () {
 
-        it('delete [test] database', function (done) {
-            db.database.delete('test')
-                .callback(done);
+        it('list', function (done) {
+            db.database.list()
+				.then(function(ret){
+					ret.json.should.include('test');
+				}).catch(done);
         })
 
-        it('create [test] database', function (done) {
-            db.database.create('test')
-                .callback(done);
-        })
     });
 
 
