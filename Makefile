@@ -41,6 +41,10 @@ test-browser: test-component
 	@echo "Running tests for browser"
 	$(KARMA) start ./test/karma/karma.conf.js
 
+unit-test:
+	@echo "testing module: $(module)"
+	$(MOCHA) --require should --reporter spec -g "-${module}"
+
 distclean:
 	@echo "Cleaning up build files"
 	@rm -rf ./node_modules
