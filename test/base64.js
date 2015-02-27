@@ -1,6 +1,6 @@
 var Base64 = require('../lib/utils/base64');
 
-describe('Base64', function () {
+describe('module:base64', function () {
     describe('methods', function () {
         it('should have encode, decode, encodeURL, decodeURL methods', function () {
             Base64.should.have.ownProperty('encode');

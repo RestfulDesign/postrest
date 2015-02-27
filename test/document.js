@@ -9,7 +9,7 @@ try {
     postrest = require('..')
 }
 
-describe("-document", function () {
+describe("module:document", function () {
 
     var db, data = [];
 

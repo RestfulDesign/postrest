@@ -6,7 +6,7 @@ try {
     postrest = require('..')
 }
 
-describe("-database", function () {
+describe("module:database", function () {
 
     var db = postrest('http://kaerus:kaerus@127.0.0.1:8080');
 

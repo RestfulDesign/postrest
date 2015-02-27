@@ -1,7 +1,7 @@
 var url = require('../lib/utils/urlparser');
 
 
-describe('-urlparser', function () {
+describe('module:urlparser', function () {
     describe('methods', function () {
         it('parse', function () {
             url.should.have.ownProperty('parse');

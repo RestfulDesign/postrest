@@ -33,7 +33,7 @@ test: test-nodejs
 
 test-nodejs: node_modules
 	@echo "Running tests for nodejs"
-	$(MOCHA) --async-only --require should --reporter spec
+	$(MOCHA) --require should --reporter spec
 
 test-browser: test-component
 	@echo "Running tests for browser"
@@ -41,7 +41,7 @@ test-browser: test-component
 
 unit-test:
 	@echo "testing module: $(module)"
-	$(MOCHA) --async-only --require should --reporter spec -g "-${module}"
+	$(MOCHA) --require should --reporter spec -g ":${module}"
 
 distclean:
 	@echo "Cleaning up build files"
