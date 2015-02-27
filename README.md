@@ -1,7 +1,11 @@
 # postrest
-Postgres REST client
+PostgreSQL RESTful client.
+
 
 ## usage
+NOTE: This project is currently in a volatile state and will get fully documented once the postgreSQL [REST service](#restadapter) has been realased.
+The raw SQL query features below are meant for experimentation and will not be part of the restful service as it is prone for SQL-injection attacs (duh).
+
 
 ```js
 
@@ -71,8 +75,11 @@ using the query builder (squel)
   */
   ```
   
-  You can read about how to use squel at https://github.com/hiddentao/squel
-  
+Read more about what you can do with squel here: https://github.com/hiddentao/squel
+
+# REST adapter
+This client requires a postgreSQL REST adapter that is currently closed sourced, planned to be released as a fully featured RESTful database SaaS.
+Contact us if you want to know more about that.
   
 
 
