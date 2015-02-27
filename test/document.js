@@ -16,9 +16,9 @@ describe("-document", function () {
     before(function (done) {
         db = postrest('http://kaerus:kaerus@127.0.0.1:8080');
 
-        db.database.delete("document").end(function () {
-            console.log("dropping document");
-            db.database.create("document").end(function () {
+        db.database.delete("document").finally(function () {
+
+            db.database.create("document").finally(function () {
 
                 db = db.use('/document:data');
                 console.log("connecting to %s", db.connection.toString());
@@ -27,12 +27,12 @@ describe("-document", function () {
                     .then(function (err, ret) {
                         console.log("create collection data");
                         db.collection.create('data')
-                            .end(function () {
+                            .then(function () {
 
                                 console.log("created data collection");
 
                                 var promise = new db.Promise();
-                                var all = [];
+                                var documents = [];
 
                                 for(var i = 0; i < 10000; i++) {
                                     var o = {};
@@ -58,7 +58,9 @@ describe("-document", function () {
                                     all.push(dc);
                                 }
 
-                                promise.fulfill().join(all).callback(done);
+                                promise.all(documents).then(function () {
+                                    done();
+                                }).catch(done);
                             });
                     });
             });
@@ -70,9 +72,10 @@ describe("-document", function () {
 
         it('get first document', function (done) {
             db.document.get(data[0].id, 'data')
-                .then(function (res) {
-                    res.id.should.equal(data[0].id);
-                }).callback(done);
+                .then(function (ret) {
+                    ret.result[0].id.should.equal(data[0].id);
+                    done();
+                }).catch(done);
         })
     });
 

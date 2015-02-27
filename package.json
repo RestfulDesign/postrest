@@ -1,6 +1,6 @@
 {
   "name": "postrest",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Postgres REST client",
   "keywords": [
     "postgres",
@@ -15,7 +15,8 @@
     "anders elo <anders@restfuldesign.com>"
   ],
   "dependencies": {
-    "squel": ">=3.10.0"
+    "squel": ">=3.10.0",
+    "bluebird": ">=2.9.0"
   },
   "devDependencies": {
     "duo": "*",
@@ -30,8 +31,7 @@
     "uglify-js": "~2.4",
     "karma-spec-reporter": "*",
     "karma-firefox-launcher": "*",
-    "karma-chrome-launcher": "*",
-    "promises-aplus-tests": "2.1.0"
+    "karma-chrome-launcher": "*"
   },
   "engine": "node >= 0.10.0",
   "bugs": {

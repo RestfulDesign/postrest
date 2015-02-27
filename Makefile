@@ -7,7 +7,6 @@ BEAUTIFY = @./node_modules/.bin/js-beautify --config ./style.json
 UGLIFYJS = @./node_modules/uglify-js/bin/uglifyjs
 KARMA = @./node_modules/karma/bin/karma
 MOCHA = @./node_modules/mocha/bin/mocha
-APLUS = @./node_modules/promises-aplus-tests/lib/cli.js
 DUO = @./node_modules/duo/bin/duo
 
 LIB = $(wildcard lib/*.js) $(wildcard lib/*/*.js)
@@ -34,8 +33,7 @@ test: test-nodejs
 
 test-nodejs: node_modules
 	@echo "Running tests for nodejs"
-	$(APLUS) ./test/aplus/adapter.js
-	$(MOCHA) --require should --reporter spec
+	$(MOCHA) --async-only --require should --reporter spec
 
 test-browser: test-component
 	@echo "Running tests for browser"
@@ -43,7 +41,7 @@ test-browser: test-component
 
 unit-test:
 	@echo "testing module: $(module)"
-	$(MOCHA) --require should --reporter spec -g "-${module}"
+	$(MOCHA) --async-only --require should --reporter spec -g "-${module}"
 
 distclean:
 	@echo "Cleaning up build files"
