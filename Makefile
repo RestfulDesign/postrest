@@ -6,7 +6,7 @@ LICENSE = `cat LICENSE`
 BEAUTIFY = @./node_modules/.bin/js-beautify --config ./style.json
 UGLIFYJS = @./node_modules/uglify-js/bin/uglifyjs
 KARMA = @./node_modules/karma/bin/karma
-MOCHA = @./node_modules/mocha/bin/mocha
+MOCHA = @./node_modules/mocha/bin/mocha --timeout 5000 --require should --reporter spec
 DUO = @./node_modules/duo/bin/duo
 
 LIB = $(wildcard lib/*.js) $(wildcard lib/*/*.js)
@@ -33,7 +33,7 @@ test: test-nodejs
 
 test-nodejs: node_modules
 	@echo "Running tests for nodejs"
-	$(MOCHA) --require should --reporter spec
+	$(MOCHA) 
 
 test-browser: test-component
 	@echo "Running tests for browser"
@@ -41,7 +41,7 @@ test-browser: test-component
 
 unit-test:
 	@echo "testing module: $(module)"
-	$(MOCHA) --require should --reporter spec -g ":${module}"
+	$(MOCHA) -g ":${module}"
 
 distclean:
 	@echo "Cleaning up build files"

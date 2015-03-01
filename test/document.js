@@ -11,59 +11,52 @@ try {
 
 describe("module:document", function () {
 
-    var db, data = [];
+    var db = postrest('http://kaerus:kaerus@127.0.0.1:8080');
+    var data = [];
 
     before(function (done) {
-        db = postrest('http://kaerus:kaerus@127.0.0.1:8080');
 
-        db.database.delete("document").finally(function () {
+        var reset = [];
+        db.database.delete("document", {
+            shutdown: true
+        }).finally(function () {
+            db.database.create("document").then(function () {
+                db = db.use("/document");
+                db.collection.create('data').then(function () {
+                    var documents = [];
+                    db = db.use(':data');
 
-            db.database.create("document").finally(function () {
+                    console.log("use:", db.connection.toString());
 
-                db = db.use('/document:data');
-                console.log("connecting to %s", db.connection.toString());
+                    for(var i = 0; i < 1000; i++) {
+                        var o = {};
+                        o['name'] = '' + i;
+                        o['value'] = i;
+                        o['tags'] = [];
+                        o['prop'] = {
+                            x: 1,
+                            y: 2
+                        };
 
-                db.collection.delete('data')
-                    .then(function (err, ret) {
-                        console.log("create collection data");
-                        db.collection.create('data')
-                            .then(function () {
+                        if(i % 1) o.tags.push('odd');
+                        if(i % 2) o.tags.push('even');
+                        if(i % 10) o.tags.push('ten');
+                        if(i % 50) o.tags.push('fifty');
+                        if(i % 100) o.tags.push('hundred');
+                        if(i % 1000) o.tags.push('thousand');
 
-                                console.log("created data collection");
-
-                                var promise = new db.Promise();
-                                var documents = [];
-
-                                for(var i = 0; i < 10000; i++) {
-                                    var o = {};
-                                    o['name'] = '' + i;
-                                    o['value'] = i;
-                                    o['tags'] = [];
-                                    o['prop'] = {
-                                        x: 1,
-                                        y: 2
-                                    };
-
-                                    if(i % 1) o.tags.push('odd');
-                                    if(i % 2) o.tags.push('even');
-                                    if(i % 10) o.tags.push('ten');
-                                    if(i % 50) o.tags.push('fifty');
-                                    if(i % 100) o.tags.push('hundred');
-                                    if(i % 1000) o.tags.push('thousand');
-
-                                    var dc = db.document.create(o, 'data')
-                                        .then(function (doc) {
-                                            data.push(doc);
-                                        });
-                                    all.push(dc);
-                                }
-
-                                promise.all(documents).then(function () {
-                                    done();
-                                }).catch(done);
+                        var dc = db.document.create(o, 'data')
+                            .then(function (doc) {
+                                data.push(doc);
                             });
-                    });
-            });
+                        documents.push(dc);
+                    }
+
+                    db.Promise.all(documents).then(function () {
+                        done();
+                    }).catch(done);
+                }).catch(done);
+            }).catch(done);
         });
 
     });
