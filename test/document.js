@@ -15,61 +15,55 @@ describe("module:document", function () {
     var data = [];
 
     before(function (done) {
-
-        var reset = [];
-        db.database.delete("document", {
-            shutdown: true
-        }).finally(function () {
-            db.database.create("document").then(function () {
-                db = db.use("/document");
-                db.collection.create('data').then(function () {
-                    var documents = [];
-                    db = db.use(':data');
-
-                    console.log("use:", db.connection.toString());
-
-                    for(var i = 0; i < 1000; i++) {
-                        var o = {};
-                        o['name'] = '' + i;
-                        o['value'] = i;
-                        o['tags'] = [];
-                        o['prop'] = {
-                            x: 1,
-                            y: 2
-                        };
-
-                        if(i % 1) o.tags.push('odd');
-                        if(i % 2) o.tags.push('even');
-                        if(i % 10) o.tags.push('ten');
-                        if(i % 50) o.tags.push('fifty');
-                        if(i % 100) o.tags.push('hundred');
-                        if(i % 1000) o.tags.push('thousand');
-
-                        var dc = db.document.create(o, 'data')
-                            .then(function (doc) {
-                                data.push(doc);
+        db.database.delete('documents')
+            .finally(function () {
+                db.database.create('documents')
+                    .finally(function () {
+                        db.use('/documents').collection.create('store')
+                            .finally(function (documents) {
+                                db = db.use('/documents:store');
+                                done();
                             });
-                        documents.push(dc);
-                    }
-
-                    db.Promise.all(documents).then(function () {
-                        done();
-                    }).catch(done);
-                }).catch(done);
-            }).catch(done);
-        });
-
+                    });
+            });
     });
 
-    describe("create", function () {
+    describe("methods", function () {
+        var retval;
 
-        it('get first document', function (done) {
-            db.document.get(data[0].id, 'data')
+        var doc1 = {
+            a: 1,
+            b: 2,
+            c: {
+                d: 3
+            }
+        };
+
+
+        it('create()', function (done) {
+
+            db.document.create(doc1)
                 .then(function (ret) {
-                    ret.result[0].id.should.equal(data[0].id);
+
+                    ret.type.should.eql('array');
+                    ret.items.should.eql(1);
+                    retval = ret.result[0];
                     done();
                 }).catch(done);
-        })
+        });
+
+        it('get()', function (done) {
+            db.document.get(retval.id)
+                .then(function (ret) {
+                    var doc = ret.result[0];
+                    doc.id.should.eql(retval.id);
+                    doc.rev.should.eql(retval.rev);
+                    doc.document.should.eql(doc1);
+                    done();
+                }).catch(done);
+        });
+
+
     });
 
 

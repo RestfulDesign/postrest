@@ -27,16 +27,16 @@ describe("module:database", function () {
             });
     });
 
-    describe("stats", function () {
+    describe("create", function () {
 
-        it('create one', function (done) {
+        it('my_test_database_1', function (done) {
             db.database.create('my_test_database_1')
                 .then(function (ret) {
                     done();
                 }).catch(done);
         })
 
-        it('create another', function (done) {
+        it('my_test_database_2', function (done) {
             db.database.create('my_test_database_2')
                 .then(function (ret) {
                     done();
@@ -44,7 +44,7 @@ describe("module:database", function () {
         })
 
 
-        it('create another one', function (done) {
+        it('my_test_database_3', function (done) {
             db.database.create('my_test_database_3')
                 .then(function (ret) {
                     done();
@@ -55,7 +55,11 @@ describe("module:database", function () {
         it('list', function (done) {
             db.database.list()
                 .then(function (ret) {
-                    ret.result.should.containDeep(['my_test_database_1', 'my_test_database_2', 'my_test_database_3']);
+                    ret.result.should.containDeep([
+                        'my_test_database_1',
+                        'my_test_database_2',
+                        'my_test_database_3'
+                    ]);
                     done();
                 }).catch(done);
         })
@@ -64,10 +68,11 @@ describe("module:database", function () {
         if('create and delete', function (done) {
                 db.database.create('delete_me')
                     .then(function () {
-                        db.database.delete('delete_me');
-                        done();
-                    })
-                    .catch(done);
+                        return db.database.delete('delete_me')
+                            .then(function () {;
+                                done();
+                            });
+                    }).catch(done);
             });
 
     });

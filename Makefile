@@ -41,7 +41,7 @@ test-browser: test-component
 
 unit-test:
 	@echo "testing module: $(module)"
-	$(MOCHA) -g ":${module}"
+	$(MOCHA) -g "module:${module}"
 
 distclean:
 	@echo "Cleaning up build files"
