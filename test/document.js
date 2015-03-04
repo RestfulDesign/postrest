@@ -44,10 +44,11 @@ describe("module:document", function () {
 
             db.document.create(doc1)
                 .then(function (ret) {
-
-                    ret.type.should.eql('array');
-                    ret.items.should.eql(1);
-                    retval = ret.result[0];
+                    ret.should.have.property('result');
+                    ret.result.should.have.property('id'); // uuid
+                    ret.result.should.have.property('rev'); // revision
+                    ret.should.have.property('items', 1); // result items
+                    retval = ret.result;
                     done();
                 }).catch(done);
         });
@@ -55,10 +56,14 @@ describe("module:document", function () {
         it('get()', function (done) {
             db.document.get(retval.id)
                 .then(function (ret) {
-                    var doc = ret.result[0];
-                    doc.id.should.eql(retval.id);
-                    doc.rev.should.eql(retval.rev);
-                    doc.document.should.eql(doc1);
+                    ret.should.have.property('items', 1);
+                    ret.should.have.property('result');
+                    var res = ret.result;
+                    res.should.be.an.Object.and.not.an.Array;
+                    res.should.have.property('id', retval.id);
+                    res.should.have.property('rev', retval.rev);
+                    res.should.have.property('doc', doc1);
+
                     done();
                 }).catch(done);
         });

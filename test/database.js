@@ -9,25 +9,37 @@ try {
 describe("module:database", function () {
 
     var db = postrest('http://kaerus:kaerus@127.0.0.1:8080');
+    var databases = [{
+        database: 'my_test_database_1'
+    }, {
+        database: 'my_test_database_2'
+    }, {
+        database: 'my_test_database_3'
+    }, ];
 
     before(function (done) {
 
-        db.database.delete('my_test_database_1')
-            .finally(function () {
+        var deletions = [];
+        databases.forEach(function (d) {
+            deletions.push(db.database.delete(d.database));
+        });
 
-                db.database.delete('my_test_database_2')
-                    .finally(function () {
-
-                        db.database.delete('my_test_database_3')
-                            .finally(function () {
-
-                                done();
-                            });
-                    });
-            });
+        db.Promise.all(deletions).finally(function () {
+            done();
+        });
     });
 
     describe("create", function () {
+
+        it('create and delete', function (done) {
+            db.database.create('delete_me')
+                .then(function () {
+                    return db.database.delete('delete_me')
+                        .then(function () {;
+                            done();
+                        });
+                }).catch(done);
+        });
 
         it('my_test_database_1', function (done) {
             db.database.create('my_test_database_1')
@@ -55,25 +67,10 @@ describe("module:database", function () {
         it('list', function (done) {
             db.database.list()
                 .then(function (ret) {
-                    ret.result.should.containDeep([
-                        'my_test_database_1',
-                        'my_test_database_2',
-                        'my_test_database_3'
-                    ]);
+                    ret.result.should.containDeep(databases);
                     done();
                 }).catch(done);
         })
-
-
-        if('create and delete', function (done) {
-                db.database.create('delete_me')
-                    .then(function () {
-                        return db.database.delete('delete_me')
-                            .then(function () {;
-                                done();
-                            });
-                    }).catch(done);
-            });
 
     });
 
