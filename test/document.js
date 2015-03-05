@@ -39,9 +39,7 @@ describe("module:document", function () {
             }
         };
 
-
         it('create()', function (done) {
-
             db.document.create(doc1)
                 .then(function (ret) {
                     ret.should.have.property('result');
