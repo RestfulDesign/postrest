@@ -1,42 +1,74 @@
 # postrest
-PostgreSQL RESTful client.
+PostgreSQL Restful Client that can be used from io.js/nodejs or browsers.
 
 
 ## usage
 NOTE: This project is currently in a volatile state and will get fully documented once the postgreSQL [REST service](#restadapter) has been realased.
-The raw SQL query features below are meant for experimentation and will not be part of the restful service as it is prone for SQL-injection attacs (duh).
+
+```js
+  var postrest = require('postrest');
+  
+  // Connect to database and perform some actions
+  postrest.Connection('http://tester:tester@127.0.0.1:8080/testdb')
+    .then(listDatabases)
+    .spread(selectLast)
+    .then(showTables)
+    .catch(onError);
+    
+    function listDatabases(db){
+      return [db,db.database.list()];
+    }
+    
+    function selectLast(db,res){
+      console.log("status:", res.status);     // http status code
+      console.log("headers: %j", res.headers);// server headers 
+      console.log("count:", res.count);       // result count
+      console.log("result: %j", res.result);  // result items (undefined if count == 0, array if count > 1)
+      var database = res.result[res.count-1].database; // pick last result list item
+      
+      return db.useDatabase(database); // create and return new database session
+    });
+    
+    function showTables(db){
+      db.database.tables(function(res){
+        console.log("tables: %j", res.result);
+    
+      });
+      
+      return db;
+    }
+    
+    function onError(error){
+      console.log("error:", error);
+    }
+```
+
+Postrest returns bluebird promises, read more about the bluebird API here: https://github.com/petkaantonov/bluebird/blob/master/API.md
 
 
 ```js
 
 var postrest = require('postrest');
 
-// connect to database 'bookstore' using schema 'v1'
-var bookstore = postrest('http://127.0.0.1:80/bookstore#v1');
+// connect to database 'bookstore' using schema 'v1' and with credentials passed in separately
+postrest.Connection('http://127.0.0.1:80/bookstore#v1',{username:'librarian', password:'monkey'}).then(bookstore);
 
 ```
 
 raw sql query
 ```js
-var result = bookstore.sql('select row_to_json(t) from books as t');
-
-result.valueOf();
-/*
-[ { id: 1,
-    data: { name: 'Book the First', author: [Object] } },
-  { id: 2,
-    data: 
-     { name: 'Book the Second',
-       author: [Object] } },
-  { id: 3,
-    data: { name: 'Book the Third', author: [Object] } } ]
-*/
+function bookstore(db){
+  db.sql('select row_to_json(t) from books as t')
+    .then(function(res){
+      console.log("books: %j",res.result);
+    });
+}
 ```
 
 select shorthand using get method
 ```js
-bookstore.sql.get("books").then(function(result){
-       console.log("%j", result);
+  db.sql.get("books").then(function(res){
+       console.log("books: %j", res.result);
     }).catch(error){
        console.log("error: %j", error);
        console.log(error);
@@ -45,41 +77,30 @@ bookstore.sql.get("books").then(function(result){
 
 using postgresql json operators with limit option
 ```js
-bookstore.sql.get("books/data->'author'->>'last_name'='Xavier'&-limit=1")
-   .then(function(result) {
-     console.log(result.length);
-   
+db.sql.get("books/data->'author'->>'last_name'='Xavier'&-limit=1")
+   .then(function(res) {
      // iterate over rows
-     result.forEach(function(row){
-        console.log(row);
-         // -> [ { id: 2, data: { name: 'Book the Second',author: [Object] } } ]
+     res.result.forEach(function(book,index){
+        console.log("book %s: %j", index, book);
      });
     }, function(error){
       console.log("error", error);
     });
  
 ```
-    
 
 using the query builder (squel)
-  ```js
-  bookstore.sql.select().field('data').from('books').exec()
-    .then(function(res){console.log("%j",res)});
-    
-  /*
-       [
-          {"name":"Book the First","author":{"first_name":"Bob","last_name":"White"}},
-          {"name":"Book the Second","author":{"first_name":"Charles","last_name":"Xavier"}},
-          {"name":"Book the Third","author":{"first_name":"Jim","last_name":"Brown"}}
-       ]
-  */
-  ```
+```js
+  db.sql.select().field('data').from('books').exec()
+    .then(console.log);
+```
   
-Read more about what you can do with squel here: https://github.com/hiddentao/squel
+Postrest uses the SQuel SQL builder, read more about that here: https://github.com/hiddentao/squel
 
 # REST adapter
-This client requires a postgreSQL REST adapter that is currently closed sourced, planned to be released as a fully featured RESTful database SaaS.
-Contact us if you want to know more about that.
+This client uses a postgreSQL REST adapter which translates queries from http REST format to postgreSQL native protocol. 
+The adapter is currently not open sourced (and may never be) but it is planned to be released as a restful database SaaS.
+Send email to <contact at restfuldesign com> if you want to know more about that.
   
 
 
