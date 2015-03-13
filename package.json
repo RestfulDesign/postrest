@@ -1,11 +1,13 @@
 {
   "name": "postrest",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Postgres REST client",
   "keywords": [
     "postgres",
+    "postgresql",
     "sql",
-    "rest"
+    "rest",
+    "nosql"
   ],
   "author": {
     "name": "Anders Elo",
