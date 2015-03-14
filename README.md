@@ -3,7 +3,7 @@ PostgreSQL Restful Client that can be used from io.js/nodejs or browsers.
 
 
 ## usage
-NOTE: This project is currently in a volatile state and will get fully documented once the postgreSQL [REST service](#restadapter) has been realased.
+NOTE: This project is currently in a volatile state and will get fully documented once the postgreSQL [REST service](https://restfuldb.com) has been realased.
 
 ```js
   var postrest = require('postrest');
