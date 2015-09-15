@@ -1,6 +1,6 @@
 {
   "name": "postrest",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "Postgres REST client",
   "keywords": [
     "postgres",
@@ -17,8 +17,7 @@
     "anders elo <anders@restfuldesign.com>"
   ],
   "dependencies": {
-    "squel": ">=3.10.0",
-    "bluebird": ">=2.9.0"
+    "squel": ">=3.10.0"
   },
   "devDependencies": {
     "duo": "*",
