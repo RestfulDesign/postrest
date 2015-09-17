@@ -1,6 +1,6 @@
 {
   "name": "postrest",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Postgres REST client",
   "keywords": [
     "postgres",
