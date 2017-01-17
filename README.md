@@ -99,8 +99,8 @@ Postrest uses the SQuel SQL builder, read more about that here: https://github.c
 
 # REST adapter
 This client uses a postgreSQL REST adapter which translates queries from http REST format to postgreSQL native protocol. 
-The adapter is currently not open sourced (and may never be) but it is planned to be released as a restful database SaaS.
-Send an email to; contact at restfuldesign dot com, if you want to know more about that.
+It is run as a REST servlet in the excellent [gwan](http://g-wan.com) web/application server.
+The gwan servlet is open sourced and can be found [here](https://github.com/kaerus/gwan_pg_rest_adapter).
   
 
 
